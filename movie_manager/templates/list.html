@@ -1,0 +1,41 @@
+{% extends 'blank_layout.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% for movie_obj in recent_movies %}
+<p>{{ movie_obj.title | upper }}</p>
+{% endfor %}
+
+
+<h1>list {{visits}} total visits</h1>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Summary</th>
+        <th>edit/delete</th>
+    </tr>
+
+{% for movie_obj in movie %}
+
+    <tr>
+        
+        <td>
+        {{movie_obj.title}}
+        {% if movie_obj.poster %}
+        <img src="{{movie_obj.poster.url}}"></img>
+        {% endif %}
+        </td>
+
+        <td>{{movie_obj.year}}</td>
+        <td>{{movie_obj.decsription}}</td>
+        <td><a href="{% url 'edit' movie_obj.id %}">edit</a>/<a href="{% url 'delete' movie_obj.id %}">delete</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+
+{% endblock content %}
