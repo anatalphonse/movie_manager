@@ -1,15 +1,60 @@
-<h1>Login</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<form method="post" enctype="multipart/form-data"> 
-{% csrf_token %}
-<p><label>UserName : </label> <input type="text" name="username"/></p>
-<p><label>Password : </label> <input type="password" name="password"/></p>
-<button type="submit">Login</button>
-<button href="{% url 'signup'%}">Sign-Up</button>
-</form>
+{% block header_title %}Login{% endblock %}
 
-<p style="background-color: red; color: white;">
-    {% if error_message %}
-    {{ error_message }} 
-    {% endif %}
-</p>
+{% block content %}
+<div class="flex flex-col items-center justify-center min-h-[80vh]">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in border border-slate-100">
+        <div class="px-8 py-10">
+            <h2 class="text-3xl font-extrabold text-center text-slate-800 mb-2">Welcome Back</h2>
+            <p class="text-center text-slate-500 mb-8">Sign in to manage your movies</p>
+
+            {% if error_message %}
+            <div
+                class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-center animate-slide-up">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
+                </svg>
+                {{ error_message }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                    <input type="text" name="username" id="username" required
+                        class="block w-full px-4 py-3 rounded-lg border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 outline-none"
+                        placeholder="Enter your username">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+                        <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot
+                            password?</a>
+                    </div>
+                    <input type="password" name="password" id="password" required
+                        class="block w-full px-4 py-3 rounded-lg border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 outline-none"
+                        placeholder="••••••••">
+                </div>
+
+                <button type="submit"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-[1.02] active:scale-95 duration-200">
+                    Sign in
+                </button>
+            </form>
+        </div>
+        <div class="px-8 py-4 bg-slate-50 border-t border-slate-100 flex justify-center">
+            <p class="text-sm text-slate-600">
+                Don't have an account?
+                <a href="{% url 'signup' %}"
+                    class="font-medium text-indigo-600 hover:text-indigo-500 hover:underline">Sign up</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

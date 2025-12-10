@@ -1,41 +1,210 @@
-{% extends 'blank_layout.html' %}
-
+{% extends 'base.html' %}
 {% load static %}
 
+{% block header_title %}Library{% endblock %}
+
 {% block content %}
+<div class="space-y-8 animate-fade-in">
 
-{% for movie_obj in recent_movies %}
-<p>{{ movie_obj.title | upper }}</p>
-{% endfor %}
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
+            <div class="p-3 bg-indigo-50 rounded-full text-indigo-600 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Total Movies</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{ movie.count }}</h3>
+            </div>
+        </div>
 
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
+            <div class="p-3 bg-emerald-50 rounded-full text-emerald-600 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Total Visits</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{ visits }}</h3>
+            </div>
+        </div>
 
-<h1>list {{visits}} total visits</h1>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
+            <div class="p-3 bg-amber-50 rounded-full text-amber-600 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Recently Added</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{ recent_movies.count }}</h3>
+            </div>
+        </div>
+    </div>
 
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Year</th>
-        <th>Summary</th>
-        <th>edit/delete</th>
-    </tr>
+    <!-- Recent Movies Carousel -->
+    {% if recent_movies %}
+    <section>
+        <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+            <span class="bg-indigo-600 w-1 h-6 rounded-full mr-3"></span>
+            Recently Viewed
+        </h2>
+        <div class="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+            {% for movie_obj in recent_movies %}
+            <div
+                class="min-w-[200px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="h-32 bg-slate-200 relative overflow-hidden group">
+                    {% if movie_obj.poster %}
+                    <img src="{{ movie_obj.poster.url }}" alt="{{ movie_obj.title }}"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    {% else %}
+                    <div class="flex items-center justify-center h-full text-slate-400">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="p-3">
+                    <h3 class="font-semibold text-slate-800 truncate">{{ movie_obj.title }}</h3>
+                    <p class="text-xs text-slate-500">{{ movie_obj.year }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
 
-{% for movie_obj in movie %}
+    <!-- All Movies Grid -->
+    <section>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold text-slate-800 flex items-center">
+                <span class="bg-indigo-600 w-1 h-6 rounded-full mr-3"></span>
+                All Movies
+            </h2>
+            <a href="{% url 'create' %}"
+                class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add New
+            </a>
+        </div>
 
-    <tr>
-        
-        <td>
-        {{movie_obj.title}}
-        {% if movie_obj.poster %}
-        <img src="{{movie_obj.poster.url}}"></img>
-        {% endif %}
-        </td>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for movie_obj in movie %}
+            <div
+                class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                <div class="aspect-w-2 aspect-h-3 bg-slate-200 relative overflow-hidden cursor-pointer">
+                    {% if movie_obj.poster %}
+                    <img src="{{ movie_obj.poster.url }}" alt="{{ movie_obj.title }}"
+                        class="w-full h-64 object-cover transform transition-transform duration-500 group-hover:scale-105">
+                    {% else %}
+                    <div class="w-full h-64 flex items-center justify-center bg-slate-100 text-slate-400">
+                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div
+                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
+                        <a href="{% url 'edit' movie_obj.id %}"
+                            class="p-2 bg-white rounded-full text-indigo-600 hover:text-indigo-800 focus:outline-none transition-transform hover:scale-110"
+                            title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path
+                                    d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                        </a>
+                        <a href="{% url 'delete' movie_obj.id %}"
+                            class="p-2 bg-white rounded-full text-red-600 hover:text-red-800 focus:outline-none transition-transform hover:scale-110"
+                            title="Delete" onclick="return confirm('Are you sure you want to delete this movie?');">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
 
-        <td>{{movie_obj.year}}</td>
-        <td>{{movie_obj.decsription}}</td>
-        <td><a href="{% url 'edit' movie_obj.id %}">edit</a>/<a href="{% url 'delete' movie_obj.id %}">delete</a></td>
-    </tr>
-{% endfor %}
+                <div class="p-4 flex flex-col flex-1">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold text-slate-800 leading-tight">{{ movie_obj.title }}</h3>
+                        <div class="flex flex-col items-end">
+                            <span
+                                class="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 inline-block whitespace-nowrap">
+                                {{ movie_obj.year|default:"2023" }}
+                            </span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-600 line-clamp-3 mb-4">{{ movie_obj.decsription }}</p>
+                    <div
+                        class="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <div class="flex flex-col">
+                            <span>{{ movie_obj.director.name }}</span>
+                            {% load movie_vars %}
+                            <div class="flex items-center mt-1">
+                                {% if movie_obj.censor_details.rating %}
+                                {% for star in movie_obj.censor_details.rating|get_stars %}
+                                {% if star == 1 %}
+                                <!-- Full Star -->
+                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                                {% elif star == 2 %}
+                                <!-- Half Star -->
+                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                    <defs>
+                                        <linearGradient id="half-star">
+                                            <stop offset="50%" stop-color="currentColor" />
+                                            <stop offset="50%" stop-color="#cbd5e1" /> <!-- slate-300 -->
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#half-star)"
+                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                                {% else %}
+                                <!-- Empty Star -->
+                                <svg class="w-4 h-4 text-slate-300 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                                {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                <span class="text-xs text-slate-400">No Rating</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if movie_obj.censor_details %}
+                        <!-- Numeric rating removed per user request -->
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 
-</table>
-
+</div>
 {% endblock content %}

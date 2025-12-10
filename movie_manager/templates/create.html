@@ -1,11 +1,33 @@
-{% extends 'blank_layout.html' %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}{% if form.instance.pk %}Edit Movie{% else %}Add Movie{% endif %}{% endblock %}
 
 {% block content %}
-<h1>create</h1>
+<div class="max-w-2xl mx-auto animate-slide-up">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-800">Movie Details</h2>
+        </div>
 
-<form method="post" enctype="multipart/form-data"> 
-{% csrf_token %}
-{{ form.as_p }}
-<button type="submit">Submit</button>
-</form>
+        <div class="p-6 md:p-8">
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <div class="pt-4 flex items-center justify-end space-x-3 border-t border-slate-100 mt-6">
+                    <a href="{% url 'list' %}"
+                        class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 font-medium transition-colors">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium shadow-sm transition-transform transform active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {% if form.instance.pk %}Update Movie{% else %}Create Movie{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}
