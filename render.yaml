@@ -2,7 +2,7 @@ services:
   # Movie Manager Web Service
   - type: web
     name: movie_manager
-    env: python
+    runtime: python
     buildCommand: "./build.sh"
     startCommand: "gunicorn wsgi:application"
     envVars:
