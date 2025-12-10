@@ -8,4 +8,4 @@ python manage.py collectstatic --no-input
 # Apply database migrations (creates auth_user and other tables)
 python manage.py migrate --no-input
 
-python manage.py createsuperuser --noinput || true
+# python manage.py createsuperuser --noinput || true
