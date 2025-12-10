@@ -1,131 +1,86 @@
-# MoviesDb
+# Movie Manager
 
-# MoviesDB Manager
-
-A Django-based application for managing a movie database. This project uses PostgreSQL as its database backend.
+**Movie Manager** is a Django-based web application designed to manage a collection of movies. It provides features for adding, viewing, updating, and deleting movie records, along with user authentication.
 
 ## Features
-- Manage movies and related data.
-- Supports PostgreSQL database for efficient data storage and querying.
 
----
+### 🎬 Movies App (`movies`)
+The core application handles movie data management:
+*   **Create**: Add new movies with details like title, year, description, and poster image.
+*   **Read**: View a list of all movies and detailed views for specific movies.
+*   **Update**: Edit existing movie details.
+*   **Delete**: Remove movies from the collection.
+*   **Relations**: Manages related data such as:
+    *   **Directors**: Linked to movies via Foreign Key.
+    *   **Actors**: Linked to movies via Many-to-Many relationship.
+    *   **Censor Info**: Linked via One-to-One relationship (Rating, Certification).
 
-## Prerequisites
+### 👤 Users App (`users`)
+Handles user access and authentication:
+*   **Signup**: Register new users.
+*   **Login**: Authenticate existing users.
+*   **Logout**: Securely end user sessions.
 
-Before running the project, ensure you have the following installed:
+## 🛠️ Utility Scripts
+The project includes standalone scripts for data maintenance:
+*   `check_data.py`: Verifies the integrity of movie data (e.g., checking years and ratings).
+*   `fix_data.py`: Automatically patches missing data (e.g., sets default year to 2023 if missing).
+*   `fix_ratings.py`: Normalizes rating data, converting string ratings to numeric values.
 
-- Python (3.8 or later)
-- PostgreSQL
-- Virtualenv (optional but recommended)
+## 🚀 Getting Started
 
----
+### Prerequisites
+*   Python 3.x
+*   PostgreSQL (configured in `settings.py`)
 
-## Installation and Setup
+### Installation
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/anatalphonse/MoviesDb.git
-   cd MoviesDb/movie_manager
-   ```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/anatalphonse/movie_manager.git
+    cd movie_manager
+    ```
 
-2. **Set Up the Virtual Environment:**
-   ```bash
-   pip install virtualenv
-   virtualenv --version
-   virtualenv my_env
-   ```
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    # Windows:
+    venv\Scripts\activate
+    # Mac/Linux:
+    source venv/bin/activate
+    ```
 
-3. **Activate the Virtual Environment:**
-   ```bash
-   cd my_env
-   cd Scripts
-   activate
-   ```
+3.  **Install dependencies:**
+    (Ensure you have Django and other required packages installed)
+    ```bash
+    pip install django pillow psycopg2
+    ```
 
-4. **Install Django:**
-   ```bash
-   pip install django
-   python -m django --version
-   ```
+4.  **Database Configuration:**
+    Ensure your PostgreSQL server is running and matches the credentials in `settings.py`:
+    *   **Name**: `movies_db`
+    *   **User**: `postgres`
+    *   **Password**: `1236`
+    *   **Host**: `localhost`
 
-5. **Deactivate and Reactivate the Virtual Environment (if needed):**
-   ```bash
-   deactivate
-   activate
-   ```
+5.  **Run Migrations:**
+    ```bash
+    python manage.py migrate
+    ```
 
-6. **Install Required Packages:**
-   ```bash
-   cd ..
-   cd movie_manager
-   pip install psycopg2
-   pip install psycopg2-binary
-   pip install psycopg
-   pip list  # Ensure either psycopg2 or psycopg appears in the list.
-   python -m pip install Pillow
-   ```
+6.  **Run the Server:**
+    ```bash
+    python manage.py runserver
+    ```
+    Access the app at `http://127.0.0.1:8000/`.
 
-7. **Configure the Database:**
-   Update the `DATABASES` setting in `settings.py` with your PostgreSQL credentials:
-   ```python
-   DATABASES = {
-       'default': {
-           'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'your_db_name',
-           'USER': 'your_db_user',
-           'PASSWORD': 'your_db_password',
-           'HOST': 'localhost',
-           'PORT': '5432',
-       }
-   }
-   ```
+## 📂 Project Structure
 
-8. **Apply Migrations:**
-   ```bash
-   python manage.py migrate
-   ```
-
-9. **Run the Development Server:**
-   ```bash
-   python manage.py runserver
-   ```
-
-10. **Access the Application:**
-    Open your browser and navigate to `http://127.0.0.1:8000/`.
-
----
-
-## Troubleshooting
-
-### Error: `ModuleNotFoundError: No module named 'django'`
-- Ensure the virtual environment is activated.
-- Install Django:
-  ```bash
-  pip install django
-  ```
-
-### Error: `No module named 'psycopg'` or `No module named 'psycopg2'`
-- Install the PostgreSQL adapter:
-  ```bash
-  pip install psycopg2-binary
-  ```
-  Or use the modern `psycopg`:
-  ```bash
-  pip install psycopg
-  ```
-
-### Error: `django.core.exceptions.ImproperlyConfigured: Error loading psycopg2 or psycopg module`
-- Double-check your database settings in `settings.py` and ensure the correct adapter is installed.
-
----
-
-## Contributing
-
-Feel free to fork this repository and submit pull requests. For major changes, please open an issue first to discuss your ideas.
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
+*   `manage.py`: Django's command-line utility.
+*   `settings.py`: Main configuration (Apps, Database, Static/Media roots).
+*   `urls.py`: Main URL routing.
+*   `movies/`: App folder for movie logic (models, views, urls).
+*   `users/`: App folder for authentication logic.
+*   `templates/`: HTML templates.
+*   `static/`: CSS, JS, and image assets.
+*   `media/`: User-uploaded content (movie posters).
