@@ -28,9 +28,15 @@ def signup(request):
     if request.POST:
         username=request.POST['username']
         password=request.POST['password']
-        try:
-            user=User.objects.create_user(username=username,password=password)
-            return redirect('login')
-        except Exception as e :
-            error_message=str(e) 
+        password_confirm=request.POST['password_confirm']
+        
+        if password != password_confirm:
+            error_message = "Passwords do not match"
+        else:
+            try:
+                user=User.objects.create_user(username=username,password=password)
+                return redirect('login')
+            except Exception as e :
+                error_message=str(e)
+ 
     return render(request,'users/create.html',{'user':user,'error_message':error_message})
