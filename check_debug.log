@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\apps\registry.py", line 158, in get_app_config
+    return self.app_configs[app_label]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: ''
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\manage.py", line 22, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\core\management\__init__.py", line 443, in execute_from_command_line
+    utility.execute()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\core\management\__init__.py", line 437, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\core\management\base.py", line 416, in run_from_argv
+    self.execute(*args, **cmd_options)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\core\management\base.py", line 460, in execute
+    output = self.handle(*args, **options)
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\core\management\commands\check.py", line 61, in handle
+    app_configs = [apps.get_app_config(app_label) for app_label in app_labels]
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\anata\OneDrive\Documents\GitHub\movie_manager\venv\Lib\site-packages\django\apps\registry.py", line 165, in get_app_config
+    raise LookupError(message)
+LookupError: No installed app with label ''.
