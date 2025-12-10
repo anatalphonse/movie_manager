@@ -5,4 +5,5 @@ set -o errexit
 pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
-python manage.py makemigrations
+# Apply database migrations (creates auth_user and other tables)
+python manage.py migrate --no-input
