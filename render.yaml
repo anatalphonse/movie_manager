@@ -1,9 +1,5 @@
-databases:
-  - name: movies_db
-    databaseName: movies_db
-    user: movies_user
-
 services:
+  # Movie Manager Web Service
   - type: web
     name: movie_manager
     env: python
@@ -11,9 +7,7 @@ services:
     startCommand: "gunicorn wsgi:application"
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: movies_db
-          property: connectionString
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
